@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Influencer Analytics Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background: linear-gradient(145deg, #0f2027, #203a43, #2c5364);
+      color: #ffffff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+      animation: fadeInBody 1s ease-in;
+    }
+
+    header {
+      text-align: center;
+      padding: 60px 20px 30px;
+      animation: fadeSlideIn 1s ease-in-out;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 12px;
+      color: #00ffe5;
+      text-shadow: 0 0 15px #00ffe5;
+    }
+
+    header h2 {
+      font-weight: 400;
+      color: #d6d6d6;
+      font-size: 1.3rem;
+    }
+
+    .details-container {
+      backdrop-filter: blur(12px);
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 24px;
+      margin: 30px auto;
+      padding: 35px;
+      width: 90%;
+      max-width: 800px;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45);
+      transition: transform 0.3s ease;
+    }
+
+    .details-container:hover {
+      transform: translateY(-4px);
+    }
+
+    .details-container h3 {
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 1.6rem;
+      color: #00e8ff;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 1rem;
+    }
+
+    th, td {
+      padding: 16px;
+      text-align: center;
+      border-bottom: 1px solid #444;
+    }
+
+    th {
+      background-color: #1b1f23;
+      color: #00eaff;
+      font-weight: 600;
+    }
+
+    td {
+      color: #e0e0e0;
+    }
+
+    .charts {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 30px;
+      margin: 50px auto;
+      width: 90%;
+      max-width: 1000px;
+    }
+
+    .chart-box {
+      flex: 1 1 400px;
+      background: rgba(255, 255, 255, 0.07);
+      border-radius: 20px;
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.5);
+      padding: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(10px);
+      height: 440px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .chart-box:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+    }
+
+    canvas {
+      max-height: 320px;
+      max-width: 100%;
+    }
+
+    .summary-button-container {
+      display: flex;
+      justify-content: center;
+      margin: 30px 0 50px;
+    }
+
+    .summary-button {
+      display: inline-block;
+      padding: 10px 24px;
+      background-color: #00ffe5;
+      color: #1b1b1b;
+      font-weight: 600;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      box-shadow: 0 6px 20px rgba(0, 255, 229, 0.4);
+      transition: background 0.3s ease, transform 0.3s ease;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .summary-button:hover {
+      background-color: #00d6c3;
+      transform: translateY(-3px);
+    }
+
+    @media(max-width: 768px) {
+      header h1 {
+        font-size: 2.4rem;
+      }
+
+      .details-container {
+        padding: 25px;
+      }
+
+      th, td {
+        font-size: 0.9rem;
+      }
+
+      .chart-box {
+        height: auto;
+        padding: 20px;
+      }
+
+      canvas {
+        max-height: 260px;
+      }
+    }
+
+    @keyframes fadeSlideIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInBody {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Influencer Analytics Dashboard</h1>
+    <h2>@{{ data.name }}'s Performance Overview</h2>
+  </header>
+
+  <div class="details-container">
+    <h3>Influencer Details</h3>
+    <table>
+      <tr><th>Platform</th><td>{{ data.platform }}</td></tr>
+      <tr><th>Area</th><td>{{ data.area }}</td></tr>
+      <tr><th>Potential Growth</th><td>{{ data.follower_growth }}</td></tr>
+      <tr><th>Payment</th><td>Rs:{{ data.payment }}</td></tr>
+      <tr><th>Evaluation</th><td>{{ data.evaluation }}</td></tr>
+    </table>
+  </div>
+
+  <div class="charts">
+    <div class="chart-box">
+      <canvas id="pieChart"></canvas>
+    </div>
+    <div class="chart-box">
+      <canvas id="barChart"></canvas>
+    </div>
+  </div>
+
+  <div class="summary-button-container">
+    <a class="summary-button" href="{{ url_for('thankyou', name=data.name) }}">Final & Summary</a>
+  </div>
+
+  <script>
+    const pieData = {
+      labels: ['Likes', 'Comments', 'Shares'],
+      datasets: [{
+        data: [{{ data.likes }}, {{ data.comments }}, {{ data.shares }}],
+        backgroundColor: ['#00d1ff', '#ff6b6b', '#ffe66d'],
+        hoverOffset: 12
+      }]
+    };
+
+    new Chart(document.getElementById('pieChart'), {
+      type: 'pie',
+      data: pieData,
+      options: {
+        responsive: true,
+        animation: {
+          animateRotate: true,
+          duration: 1500
+        },
+        plugins: {
+          legend: {
+            labels: {
+              color: '#ffffff',
+              font: { size: 14 }
+            }
+          }
+        }
+      }
+    });
+
+    new Chart(document.getElementById('barChart'), {
+      type: "bar",
+      data: {
+        labels: ["Engagement Score", "Follower Growth", "Sentiment Score"],
+        datasets: [{
+          label: "Metrics",
+          data: [{{ data.engagement_score }}, {{ data.follower_growth }}, {{ data.sentiment_score }}],
+          backgroundColor: ["#007bff", "#28a745", "#ffc107"],
+          borderRadius: 12
+        }]
+      },
+      options: {
+        responsive: true,
+        animation: {
+          duration: 1500
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: { color: "#ffffff" },
+            grid: { color: "#333" }
+          },
+          x: {
+            ticks: { color: "#ffffff" },
+            grid: { color: "#333" }
+          }
+        },
+        plugins: {
+          legend: {
+            labels: { color: "#ffffff", font: { size: 14 } }
+          }
+        }
+      }
+    });
+  </script>
+</body>
+</html>

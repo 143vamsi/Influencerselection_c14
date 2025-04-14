@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank You - TrendPulse</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <style>
+    :root {
+      --primary: #4361ee;
+      --secondary: #3f37c9;
+      --accent: #4cc9f0;
+      --light: #f8f9fa;
+      --dark: #212529;
+    }
+    
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #0a0e23 0%, #1a1a2e 100%);
+      margin: 0;
+      padding: 0; 
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: var(--light);
+      overflow-x: hidden;
+    }
+    
+    .thank-you-container {
+      background: rgba(15, 23, 42, 0.9);
+      border-radius: 25px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+      padding: 50px;
+      max-width: 800px;
+      width: 90%;
+      margin: 20px;
+      position: relative;
+      overflow: hidden;
+      z-index: 1;
+      border: 1px solid rgba(67, 97, 238, 0.2);
+    }
+    
+    .thank-you-container::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 10px;
+      background: linear-gradient(90deg, var(--primary), var(--accent));
+    }
+    
+    h1 {
+      color: var(--accent);
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 2.5rem;
+      position: relative;
+      display: inline-block;
+      text-shadow: 0 0 10px rgba(76, 201, 240, 0.5);
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 60px;
+      height: 4px;
+      background: var(--accent);
+      border-radius: 2px;
+    }
+    
+    .message {
+      font-size: 1.2rem;
+      line-height: 1.8;
+      margin-bottom: 40px;
+      color: #adb5bd;
+    }
+    
+    .highlight {
+      font-weight: 600;
+      color: var(--accent);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .highlight::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background: rgba(76, 201, 240, 0.3);
+      z-index: -1;
+      border-radius: 4px;
+    }
+    
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 30px;
+      margin: 50px 0;
+    }
+    
+    .feature-card {
+      background: rgba(30, 41, 59, 0.7);
+      border-radius: 15px;
+      padding: 30px 20px;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(67, 97, 238, 0.1);
+      text-align: center;
+    }
+    
+    .feature-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(67, 97, 238, 0.2);
+      background: rgba(30, 41, 59, 0.9);
+    }
+    
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      margin: 0 auto 20px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+    }
+    
+    .feature-title {
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: var(--light);
+    }
+    
+    .feature-desc {
+      font-size: 0.9rem;
+      color: #94a3b8;
+      line-height: 1.6;
+    }
+    
+    .cta-section {
+      margin-top: 50px;
+      text-align: center;
+    }
+    
+    .cta-button {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      border: none;
+      padding: 16px 40px;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+      box-shadow: 0 10px 20px rgba(67, 97, 238, 0.3);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cta-button:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 15px 30px rgba(67, 97, 238, 0.5);
+    }
+    
+    .cta-button::after {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+    }
+    
+    .floating-shapes {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      z-index: -1;
+    }
+    
+    .shape {
+      position: absolute;
+      opacity: 0.08;
+      border-radius: 50%;
+    }
+    
+    .shape-1 {
+      width: 300px;
+      height: 300px;
+      background: var(--primary);
+      top: -100px;
+      right: -100px;
+    }
+    
+    .shape-2 {
+      width: 200px;
+      height: 200px;
+      background: var(--accent);
+      bottom: -50px;
+      left: -50px;
+    }
+    
+    @media (max-width: 768px) {
+      .thank-you-container {
+        padding: 30px 20px;
+      }
+      
+      h1 {
+        font-size: 2rem;
+      }
+      
+      .features-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="floating-shapes">
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+  </div>
+  
+  <div class="thank-you-container">
+    <h1>Thank You!</h1>
+    
+    <div class="message">
+      We truly appreciate you choosing <span class="highlight">ML Based Influencer Selection</span> for your influencer analytics. Your trust means everything to us, and we're committed to delivering exceptional insights to grow your brand.
+    </div>
+    
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon">📊</div>
+        <h3 class="feature-title">Comprehensive Analytics</h3>
+        <p class="feature-desc">Deep dive into engagement metrics, audience demographics, and performance trends</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🔍</div>
+        <h3 class="feature-title">AI-Powered Insights</h3>
+        <p class="feature-desc">Our advanced algorithms uncover hidden opportunities in your influencer campaigns</p>
+      </div>
+      
+      <div class="feature-card">
+        <div class="feature-icon">🚀</div>
+        <h3 class="feature-title">Growth Strategies</h3>
+        <p class="feature-desc">Personalized recommendations to maximize your influencer marketing ROI</p>
+      </div>
+    </div>
+    
+    <div class="cta-section">
+      <p style="margin-bottom: 30px; font-size: 1.1rem; color: #adb5bd;">Ready to take your influencer marketing to the next level?</p>
+      <a href="/dashboard" class="cta-button">Explore Your Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    // Celebration confetti
+    window.onload = function() {
+      confetti({
+        particleCount: 150,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#4361ee', '#3f37c9', '#4cc9f0']
+      });
+      
+      // Animate feature cards on scroll
+      const featureCards = document.querySelectorAll('.feature-card');
+      featureCards.forEach((card, index) => {
+        card.style.opacity = '0';
+        card.style.transform = 'translateY(20px)';
+        card.style.transition = `all 0.5s ease ${index * 0.1}s`;
+      });
+      
+      setTimeout(() => {
+        featureCards.forEach(card => {
+          card.style.opacity = '1';
+          card.style.transform = 'translateY(0)';
+        });
+      }, 300);
+    };
+  </script>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Top Ranked Influencers</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      background: radial-gradient(ellipse at top left, #0f0c29, #302b63, #24243e);
+      color: #fff;
+      min-height: 100vh;
+      padding: 30px 20px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 40px;
+      animation: fadeInUp 1s ease-out;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      font-weight: 600;
+      background: linear-gradient(90deg, #ff9a9e, #fad0c4, #fad0c4);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .table-container {
+      width: 95%;
+      max-width: 1200px;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(16px);
+      border-radius: 20px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+      overflow-x: auto;
+      animation: fadeIn 1.2s ease-in;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 16px;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    th {
+      background-color: rgba(255, 255, 255, 0.08);
+      color: #00eaff;
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    td {
+      color: #f1f1f1;
+      font-size: 0.92rem;
+    }
+
+    tr:hover {
+      background-color: rgba(0, 255, 255, 0.1);
+      transition: 0.4s;
+    }
+
+    a {
+      color: #00f7ff;
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    a:hover {
+      color: #ffffff;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 6px 14px;
+      border-radius: 14px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      box-shadow: 0 0 8px #00eaff;
+    }
+
+    .Excellent { background: linear-gradient(to right, #00c853, #64dd17); }
+    .Good { background: linear-gradient(to right, #2196f3, #00bcd4); }
+    .Average { background: linear-gradient(to right, #ffc107, #ff9800); color: #000; }
+    .Poor { background: linear-gradient(to right, #f44336, #e53935); }
+
+    .crown {
+      color: gold;
+      font-size: 1.2rem;
+      margin-left: 5px;
+      animation: shine 2s infinite;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    @keyframes shine {
+      0% { text-shadow: 0 0 5px gold; }
+      50% { text-shadow: 0 0 15px gold; }
+      100% { text-shadow: 0 0 5px gold; }
+    }
+
+    @media (max-width: 768px) {
+      header h1 {
+        font-size: 2.2rem;
+      }
+
+      th, td {
+        font-size: 0.8rem;
+        padding: 10px;
+      }
+
+      .tag {
+        padding: 4px 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Top Ranked Influencers</h1>
+  </header>
+
+  <div class="table-container">
+    <table>
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Platform</th>
+          <th>Area</th>
+          <th>Engagement Rate</th>
+          <th>Follower Growth</th>
+          <th>Sentiment Score</th>
+          <th>Final Score</th>
+          <th>Evaluation</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for influencer in top_influencer %}
+        <tr>
+          <td>
+            {{ loop.index }}
+            {% if loop.index == 1 %}
+              <i class="fas fa-crown crown"></i>
+            {% endif %}
+          </td>
+          <td><a href="/pie_chart/{{ influencer.name }}" target="_blank">{{ influencer.name }}</a></td>
+          <td>{{ influencer.platform }}</td>
+          <td>{{ influencer.area }}</td>
+          <td>{{ influencer.engagement_rate }}</td>
+          <td>{{ influencer.follower_growth }}</td>
+          <td>{{ influencer.sentiment_score }}</td>
+          <td>{{ influencer.final_score }}</td>
+          <td><span class="tag {{ influencer.Evaluation }}">{{ influencer.Evaluation }}</span></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
